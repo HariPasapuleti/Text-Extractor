@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", template_folder="templates")
 
 def preprocess_image(image):
     # Convert image to grayscale
@@ -26,24 +26,28 @@ def extract_text_from_image(file_stream):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        # Check if file is uploaded
-        if 'file' not in request.files:
-            return jsonify({"error": "No file uploaded"}), 400
-        
-        file = request.files['file']
-        if file.filename == "":
-            return jsonify({"error": "No file selected"}), 400
-        
-        # Extract text without saving the file locally
-        extracted_text = extract_text_from_image(file)
-        
-        # Return extracted text as JSON response
-        response = {
-            "text": extracted_text.strip()
-        }
-        return jsonify(response)
-    
+        try:
+            # Check if file is uploaded
+            if 'file' not in request.files:
+                return jsonify({"error": "No file uploaded"}), 400
+            
+            file = request.files['file']
+            if file.filename == "":
+                return jsonify({"error": "No file selected"}), 400
+            
+            # Extract text without saving the file locally
+            extracted_text = extract_text_from_image(file)
+            
+            # Return extracted text as JSON response
+            response = {
+                "text": extracted_text.strip()
+            }
+            return jsonify(response)
+        except Exception as e:
+            return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
     return render_template("index.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    print("Starting Flask app...")
+    app.run(debug=False, port=5001)

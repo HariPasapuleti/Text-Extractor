@@ -55,39 +55,47 @@
         });
 
         document.getElementById("uploadForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
+        e.preventDefault();
 
-            const formData = new FormData();
-            const fileInput = document.getElementById("file");
-            formData.append("file", fileInput.files[0]);
+        const formData = new FormData();
+        const fileInput = document.getElementById("file");
+        formData.append("file", fileInput.files[0]);
 
-            const outputDiv = document.getElementById("output");
-            outputDiv.innerHTML = "<p>Processing your image...</p>";
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = "<p>Processing your image...</p>";
 
+        try {
             const response = await fetch("/", {
                 method: "POST",
                 body: formData,
             });
 
-            const data = await response.json();
-            if (response.ok) {
-                outputDiv.innerHTML = `
-                    <h2>Extracted Text:</h2>
-                    <textarea readonly>${data.text}</textarea>
-                    <button id="downloadBtn" class="btn">Download Text</button>
-                `;
-
-                document.getElementById("downloadBtn").addEventListener("click", () => {
-                    const blob = new Blob([data.text], { type: "text/plain" });
-                    const link = document.createElement("a");
-                    link.href = URL.createObjectURL(blob);
-                    link.download = "extracted_text.txt";
-                    link.click();
-                });
-            } else {
-                outputDiv.innerHTML = `<p>Error: Unable to process the image.</p>`;
+            if (!response.ok) {
+                const errorData = await response.json();
+                outputDiv.innerHTML = `<p>Error: ${errorData.error || "Unable to process the image."}</p>`;
+                return;
             }
-        });
+
+            const data = await response.json();
+            outputDiv.innerHTML = `
+                <h2>Extracted Text:</h2>
+                <textarea readonly>${data.text}</textarea>
+                <button id="downloadBtn" class="btn">Download Text</button>
+            `;
+
+            document.getElementById("downloadBtn").addEventListener("click", () => {
+                const blob = new Blob([data.text], { type: "text/plain" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "extracted_text.txt";
+                link.click();
+            });
+        } catch (error) {
+            console.error("Error:", error);
+            outputDiv.innerHTML = `<p>An unexpected error occurred. Please try again later.</p>`;
+        }
+    });
+
     </script>
 </body>
 </html>
