@@ -2,8 +2,10 @@ services:
   - type: web
     name: flask-text-extractor
     env: python
-    buildCommand: ""
-    startCommand: gunicorn app:app
+    buildCommand: |
+      apt-get update && apt-get install -y tesseract-ocr libtesseract-dev
+      pip install -r requirements.txt
+    startCommand: gunicorn text_extractor:app
     envVars:
       - key: FLASK_ENV
         value: production
