@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Text Extractor</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="icon" type="image/png" href="/static/text-extractor.png">
+</head>
+<body>
+    <div class="app-container">
+        <div class="card">
+            <h1>Image Text Extractor</h1>
+            <p>Upload an image to extract text using OCR technology.</p>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <label for="file" class="upload-label">
+                    <input type="file" name="file" id="file" accept=".jpg, .png" required>
+                    Choose an Image
+                </label>
+                <p id="fileName" class="file-name"></p>
+                <div id="imagePreviewContainer" class="image-preview-container">
+                    <img id="imagePreview" class="image-preview" alt="Image Preview" />
+                </div>
+                <button type="submit" class="btn">Extract Text</button>
+            </form>
+            <div id="output" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("file").addEventListener("change", (e) => {
+            const fileInput = e.target;
+            const file = fileInput.files[0];
+            const fileNameElement = document.getElementById("fileName");
+            const imagePreview = document.getElementById("imagePreview");
+            const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+
+            if (file) {
+                // Display the file name
+                fileNameElement.textContent = `Selected File: ${file.name}`;
+
+                // Preview the image
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    imagePreview.src = event.target.result;
+                    imagePreviewContainer.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Reset if no file is selected
+                fileNameElement.textContent = "";
+                imagePreview.src = "";
+                imagePreviewContainer.style.display = "none";
+            }
+        });
+
+        document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData();
+            const fileInput = document.getElementById("file");
+            formData.append("file", fileInput.files[0]);
+
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = "<p>Processing your image...</p>";
+
+            const response = await fetch("/", {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                outputDiv.innerHTML = `
+                    <h2>Extracted Text:</h2>
+                    <textarea readonly>${data.text}</textarea>
+                    <button id="downloadBtn" class="btn">Download Text</button>
+                `;
+
+                document.getElementById("downloadBtn").addEventListener("click", () => {
+                    const blob = new Blob([data.text], { type: "text/plain" });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = "extracted_text.txt";
+                    link.click();
+                });
+            } else {
+                outputDiv.innerHTML = `<p>Error: Unable to process the image.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
