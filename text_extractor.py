@@ -7,6 +7,8 @@ import numpy as np
 # Initialize Flask app
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
 def preprocess_image(image):
     # Convert image to grayscale
     img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
