@@ -3,11 +3,16 @@ import pytesseract
 from PIL import Image
 import cv2
 import numpy as np
+import os
+
 
 # Initialize Flask app
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+if os.name == "nt":  # For Windows
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+else:  # For Linux/Mac
+    pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 def preprocess_image(image):
     # Convert image to grayscale
@@ -52,4 +57,5 @@ def index():
 
 if __name__ == "__main__":
     print("Starting Flask app...")
-    app.run(debug=False, port=5001)
+    app.run(host="0.0.0.0", debug=True, port=5000)
+
