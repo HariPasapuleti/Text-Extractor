@@ -2,7 +2,6 @@
 
 A Flask-powered web application that extracts text from images using **Tesseract OCR**. The app supports image preprocessing for improved accuracy, an intuitive interface, and the ability to download extracted text.
 
----
 
 ## 🌟 Features
 
@@ -64,12 +63,12 @@ You can view a live demo of the app [here](https://your-demo-link.com)
    ```bash
    python text_extractor.py
    ```
-
+<!--
 5. Open the app in your browser:
    ```
    http://localhost:5000
    ```
-
+-->
 ---
 
 ## 🖥️ Usage
@@ -79,4 +78,3 @@ You can view a live demo of the app [here](https://your-demo-link.com)
 3. **Extract Text**: View extracted text directly on the page.
 4. **Download**: Save the extracted text as a `.txt` file.
 
----
