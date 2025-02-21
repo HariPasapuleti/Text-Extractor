@@ -16,8 +16,7 @@ A Flask-powered web application that extracts text from images using **Tesseract
 
 ## 🚀 Live Demo
 
-[Click here to view the app (if hosted)](https://your-demo-link.com)  
-*(Replace with your hosted app link if available.)*
+You can view a live demo of the app [here](https://your-demo-link.com)  
 
 ---
 
