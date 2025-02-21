@@ -1,6 +1,6 @@
 Flask
 pytesseract
-opencv-python
+opencv-python-headless
 Pillow
 numpy
 gunicorn
