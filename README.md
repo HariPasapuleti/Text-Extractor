@@ -69,8 +69,8 @@ You can view a live demo of the app [here](https://your-demo-link.com)
    http://localhost:5000
    ```
 -->
----
 
+---
 ## 🖥️ Usage
 
 1. **Upload an Image**: Accepts `.jpg` or `.png` formats.
