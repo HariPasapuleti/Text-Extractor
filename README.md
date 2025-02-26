@@ -38,7 +38,7 @@ You can view a live demo of the app [here](https://your-demo-link.com)
      ```bash
      sudo apt install tesseract-ocr
      ```
-
+ 
 ### Steps to Run Locally
 
 1. Clone the repository:
