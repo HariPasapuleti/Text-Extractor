@@ -2,7 +2,7 @@
 
 A Flask-powered web application that extracts text from images using **Tesseract OCR**. The app supports image preprocessing for improved accuracy, an intuitive interface, and the ability to download extracted text.
  
-
+ 
 ## 🌟 Features
 
 - **OCR-Based Text Extraction**: Leverages Tesseract OCR for reliable text recognition.
