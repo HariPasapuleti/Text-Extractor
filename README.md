@@ -1,4 +1,4 @@
-# 🖼️ Image Text Extractor 
+# 🖼️ Image Text Extractor
 
 A Flask-powered web application that extracts text from images using **Tesseract OCR**. The app supports image preprocessing for improved accuracy, an intuitive interface, and the ability to download extracted text.
  
